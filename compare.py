@@ -2,29 +2,22 @@
 import time
 import xlrd
 from xlrd import xldate_as_tuple
-import string
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 import activ
 import sys
 import requests
-import urllib3
-import selenium
 # pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pandas
 from bs4 import BeautifulSoup
-from time import sleep
-import random
-import lxml
-import hashlib
-import json
-from lxml import etree
-from sys import path
-import pandas
-import io
+
+#服务器名称对应地址
 dict_sAdress={}
 dict_sAdress['对外安卓测试服']='http://120.92.9.137:882'
 dict_sAdress['对外IOS测试服']='http://120.92.9.137:872'
+
+#excel表格读取相关
 class execle():
+
     def __init__(self,adreess='C:/Users/Administrator/Desktop/活动测试(3).xlsx',ename='Sheet1'):
         self.ad=adreess
         self.en=ename
@@ -33,6 +26,7 @@ class execle():
         self.excel_j()
         self.get_Amessage()
 
+    #表格的读取
     def excel_j(self):
         data = xlrd.open_workbook(self.ad)
         data.sheet_names()  # 获取表格分页名称
@@ -67,6 +61,7 @@ class execle():
         self.dict.pop(0)
         # return self.dict
 
+    #表格内容的格式转换，时间格式，活动的名称、时间、内容解析
     def get_Amessage(self):
         s = 0
         for keyA in self.dict.keys():
@@ -222,6 +217,7 @@ class execle():
             # else:
             #     self.dict_A[activ_id]=activ_q
 
+    #按照固定模板，对每个活动进行处理
     def chuli_activ(self):
         for keyB in list(self.dict_A.keys()):
             chongzhi = ['充值有礼']
@@ -567,6 +563,7 @@ class execle():
 
         return self.dict_A
 
+#服务器活动读取相关
 class sever():
     def __init__(self,url='',iadress='',cadress='',api='/sgame_gm/gm_active_port/get_activeshow'):
         self.u=url
@@ -628,7 +625,7 @@ class sever():
 
     #输入服务器返回的道具ID，转换为道具的名称
     def jiangli_j(self,jiangli,fanzhuan):  # 传入奖励 '[{role_money,540000},{prop,{3502,6}},{prop,{3576,2}}]'
-        self.liste = []
+        self.listeZ = []
         if '},{' in jiangli and '[' in jiangli:
             jiangli = jiangli.replace('},{', '/').replace('{', '').replace('}', '')
             jiangli = jiangli.replace('[', '').replace(']', '')  # 替换掉括号
@@ -651,51 +648,51 @@ class sever():
                 # print(jianglia[a])
                 if jianglia[a][0] in daoju:  # 判断道具类型
                     jianglia[a][1] = self.d_iteam[jianglia[a][1]]
-                    self.liste.append(jianglia[a][1])
-                    self.liste.append(jianglia[a][2])
+                    self.listeZ.append(jianglia[a][1])
+                    self.listeZ.append(jianglia[a][2])
                 elif jianglia[a][0] in jiuji:
                     # print(jianglia[a])
                     jianglia[a][1] = self.d_card[jianglia[a][1]]
                     if int(jianglia[a][2]) > 1:
                         jianglia[a][1] = jianglia[a][2] + '星' + jianglia[a][1]
                     # print(jianglia[a])
-                    self.liste.append(jianglia[a][1])
-                    self.liste.append(jianglia[a][3])
+                    self.listeZ.append(jianglia[a][1])
+                    self.listeZ.append(jianglia[a][3])
                 elif jianglia[a][0] in yingxiong:
                     jianglia[a][1] = jianglia[a][2] + '星' + self.d_iteam['4' + jianglia[a][1][1:4]].split('魂石')[0]
-                    self.liste.append(jianglia[a][1])
-                    self.liste.append(jianglia[a][3])
+                    self.listeZ.append(jianglia[a][1])
+                    self.listeZ.append(jianglia[a][3])
                 elif jianglia[a][0] in jinbi:
                     jianglia[a][0] = self.d_iteam[jianglia[a][0]]
                     # print(self.d_iteam['role_money'])
-                    self.liste.append(jianglia[a][0])
-                    self.liste.append(jianglia[a][1])
+                    self.listeZ.append(jianglia[a][0])
+                    self.listeZ.append(jianglia[a][1])
         elif fanzhuan == 0:
             for a in reversed(range(len(jianglia))):
                 jianglia[a] = jianglia[a].split(',')
                 # print(jianglia[a])
                 if jianglia[a][0] in daoju:  # 判断道具类型
                     jianglia[a][1] = self.d_iteam[jianglia[a][1]]
-                    self.liste.append(jianglia[a][1])
-                    self.liste.append(jianglia[a][2])
+                    self.listeZ.append(jianglia[a][1])
+                    self.listeZ.append(jianglia[a][2])
                 elif jianglia[a][0] in jiuji:
                     # print(jianglia[a])
                     jianglia[a][1] = self.d_card[jianglia[a][1]]
                     if int(jianglia[a][2]) > 1:
                         jianglia[a][1] = jianglia[a][2] + '星' + jianglia[a][1]
                     # print(jianglia[a])
-                    self.liste.append(jianglia[a][1])
-                    self.liste.append(jianglia[a][3])
+                    self.listeZ.append(jianglia[a][1])
+                    self.listeZ.append(jianglia[a][3])
                 elif jianglia[a][0] in yingxiong:
                     jianglia[a][1] = jianglia[a][2] + '星' + self.d_iteam['4' + jianglia[a][1][1:4]].split('魂石')[0]
-                    self.liste.append(jianglia[a][1])
-                    self.liste.append(jianglia[a][3])
+                    self.listeZ.append(jianglia[a][1])
+                    self.listeZ.append(jianglia[a][3])
                 elif jianglia[a][0] in jinbi:
                     jianglia[a][0] = self.d_iteam[jianglia[a][0]]
                     # print(self.d_iteam['role_money'])
-                    self.liste.append(jianglia[a][0])
-                    self.liste.append(jianglia[a][1])
-        return self.liste
+                    self.listeZ.append(jianglia[a][0])
+                    self.listeZ.append(jianglia[a][1])
+        return self.listeZ
 
     #从服务器获取当前的所有活动
     def get_activ(self):  # 从服务器获取现在开启的所有活动
@@ -801,9 +798,7 @@ class sever():
                             charge = activ_j[1].split(',')[1].split('}')[0] + '0'
                             liste.append(charge)
                             liste.append(day)
-                        print(activ_j[3])
                         jiangli = self.jiangli_j(activ_j[3], 0)
-                        print(jiangli)
                         for k in jiangli:
                             liste.append(k)
                         listc.append(liste)
@@ -830,9 +825,7 @@ class sever():
                         else:  # 读取奖励的充值金额
                             charge = activ_j[0] + '0'
                             listjx.append(charge)
-                        print(33)
                         listjl = self.jiangli_j(activ_j[2], 0)
-                        print(listjl)
                         for k in listjl:
                             listjx.append(k)
                         listez.append(listjx)
@@ -1508,11 +1501,12 @@ class sever():
 
         return self.dict_final
 
+#服务器时间修改与查询
 class Time():
-    def __init__(self,url,types,datein):
+    def __init__(self,ur,types,datein):
         self.t=types
         self.d=datein
-        self.u=url
+        self.u=ur
         self.a = '/sgame_gm/server_port/server_time'
     def time(self):
         #查询：：1；重置：2；修改：3
@@ -1523,27 +1517,36 @@ class Time():
             "date": self.d,
             "user": "admin",
             "password": "123456"
-
         }
-        r = requests.post(url, data)
-        return r.text
+        try:
+            r = requests.post(url, data)
+            return r.text
+        except Exception as e:
+            print(type(e))
+            print(e)
+            return 'o'
 
+#功能界面的显示与操作相关
 class ui_compare(QMainWindow,activ.Ui_MainWindow):
     def __init__(self):
         super(ui_compare,self).__init__()
         self.ui=activ.Ui_MainWindow()
         self.ui.setupUi(self)
-        # self.ui.tabWidget.setTabText(self.ui.tabWidget.indexOf(self.ui.t_1),'3434')
-        # self.ui.t_4=QtWidgets.QWidget()
-        # self.ui.t_4.setObjectName('4')
-        # self.ui.tabWidget.addTab(self.ui.t_4,'444')
-        # self.ui.tabWidget.removeTab(self.ui.tab_2)
+        self.ui.b_load.setEnabled(False)
+        self.ui.checkBox.hide()
+        self.ui.checkBox_2.hide()
+        self.ui.checkBox_3.hide()
+        self.ui.c_xiangxi.hide()
+        self.ui.c_suonlue.hide()
+        self.ui.pushButton_4.hide()
+        self.ui.pushButton.setText('*-*-* *:*:*')
         self.ui.b_load.clicked.connect(lambda :self.compare_d())
         self.ui.excel_1.clicked.connect(lambda :self.getmassage(1))
         self.ui.excel_2.clicked.connect(lambda: self.getmassage(2))
         self.listr=[]
         self.liste=[]
         self.lists=[]
+        self.judge=[False,False,False,False]
         self.ui.checkBox.clicked.connect(lambda :self.check(1))
         self.ui.checkBox_2.clicked.connect(lambda :self.check(2))
         self.ui.checkBox_3.clicked.connect(lambda :self.check(3))
@@ -1552,6 +1555,7 @@ class ui_compare(QMainWindow,activ.Ui_MainWindow):
         self.ui.b_selectCard.clicked.connect(lambda :self.getCard())
         self.ui.b_selectItem.clicked.connect(lambda :self.getIteam())
         self.ui.b_selectExcel.clicked.connect(lambda :self.getExcel())
+        self.ui.pushButton_3.clicked.connect(lambda :self.getSever())
     def check(self,a):
         if a==1:
             self.ui.checkBox.setChecked(True)
@@ -1572,36 +1576,83 @@ class ui_compare(QMainWindow,activ.Ui_MainWindow):
             self.ui.c_suonlue.setChecked(True)
             self.ui.c_xiangxi.setChecked(False)
     def getSever(self):
-        pass
-    def getIteam(self):
-        self.openfile_iteam=QFileDialog.getOpenFileName(self,'选择文件','','Txt files(*.txt)')
-    def getCard(self):
-        self.openfile_card = QFileDialog.getOpenFileName(self, '选择文件', '', 'Txt files(*.txt)')
-    def getExcel(self):
-        self.openfile_name=QFileDialog.getOpenFileName(self,'选择文件','','Excel files(*.xlsx , *.xls)')
+        self.url=dict_sAdress[self.ui.comboBox.currentText()] #真服务器时间获取
+        self.ui.pushButton_3.setText('连接中...')
+        self.ui.pushButton_3.setEnabled(False)
+        QApplication.processEvents()
+        self.aaa = Time(self.url, '1', '').time()
+        # time=self.ui.calendarWidget.selectedDate()
+        # ddd=str(time).replace(' ','').split('(')[1].split(')')[0].split(',')
+        # aaa='%s-%s-%s 12:00:00'%(ddd[0],ddd[1],ddd[2])
+        if self.aaa !='o':
+            self.ui.pushButton_4.setText('连接成功')
+            self.ui.pushButton.setText(self.aaa)
+            self.judge[0]=True
+            if not False in self.judge:
+                self.ui.b_load.setEnabled(True)
+        else:
+            self.ui.pushButton_4.setText('连接失败')
+        self.ui.pushButton_4.show()
+        self.ui.pushButton_3.setEnabled(True)
+        self.ui.pushButton_3.setText('连接检查')
 
+    def getIteam(self):
+        self.openfile_iteam=QFileDialog.getOpenFileName(self,'选择文件','','Txt files(*.txt)')[0]
+        if self.openfile_iteam !='':
+            self.judge[1] = True
+            self.ui.b_selectItem.setText('道具表OK')
+            if not False in self.judge:
+                self.ui.b_load.setEnabled(True)
+    def getCard(self):
+        self.openfile_card = QFileDialog.getOpenFileName(self, '选择文件', '', 'Txt files(*.txt)')[0]
+        if self.openfile_card !='':
+            self.judge[2] = True
+            self.ui.b_selectCard.setText('究极表OK')
+            if not False in self.judge:
+                self.ui.b_load.setEnabled(True)
+    def getExcel(self):
+        self.openfile_name=QFileDialog.getOpenFileName(self,'选择文件','','Excel files(*.xlsx , *.xls)')[0]
+        if self.openfile_name !='':
+            self.judge[3] = True
+            self.ui.b_selectExcel.setText('活动表OK')
+            if not False in self.judge:
+                self.ui.b_load.setEnabled(True)
     def compare_d(self):
+        self.ui.b_load.setEnabled(False)
+        self.ui.b_load.setText('对比中...')
+        QApplication.processEvents()
+        self.url = dict_sAdress[self.ui.comboBox.currentText()]
         page=self.ui.l_ename.text()
         if page=='':
-            page='Sheet3'
-        urln=dict_sAdress[self.ui.comboBox.currentText()]
+            page='Sheet1'
         time=self.ui.calendarWidget.selectedDate()
-        ddd=str(time).split('(')[1].split(')')[0].split(',')
-        aaa='2020-09-05 12:00:00'
-        print(aaa)
-        Time(urln,'3',aaa).time()
+        ddd=str(time).replace(' ','').split('(')[1].split(')')[0].split(',')
+        aaa='%s-%s-%s 12:00:00'%(ddd[0],ddd[1],ddd[2])
+        dateTime='%s-%s-%s'%(ddd[0],ddd[1],ddd[2])
+        Time(self.url,'3',aaa).time() #修改服务器时间
         self.ui.pushButton.setText(aaa)
-        self.excel = sever(urln,self.openfile_iteam[0],self.openfile_card[0]).jx_huodong()
-        # sever(urln,self.openfile_iteam,self.openfile_card).get_activ()
-        # sever(urln,self.openfile_iteam,self.openfile_card).j_activ()
-        # self.sever=sever(urln,self.openfile_iteam,self.openfile_card).jx_huodong()
-        self.sever= sever(urln,self.openfile_iteam[0],self.openfile_card[0]).jx_huodong()
-        self.model_2 = QStandardItemModel(3,8)
+        self.severAll= sever(self.url,self.openfile_iteam,self.openfile_card).jx_huodong()
+        self.excelAll = execle(self.openfile_name,page).chuli_activ()
+        # self.severAll = execle(self.openfile_name,page).chuli_activ()
+        self.model_2 = QStandardItemModel(0,8)
         self.ui.excel_2.setModel(self.model_2)
-        self.model_1 = QStandardItemModel(3, 8)
+        self.model_1 = QStandardItemModel(0, 8)
         self.ui.excel_1.setModel(self.model_1)
         self.ui.excel_1.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.ui.excel_2.setEditTriggers(QAbstractItemView.NoEditTriggers)
+
+        #筛选对比当前的开始的活动
+        self.excel={}
+        for key in self.excelAll.keys():
+            dateTimeE=self.excelAll[key][0][2].split(' ')[0]
+            if dateTimeE==dateTime:
+                self.excel[key]=self.excelAll[key]
+        self.sever={}
+        for key in self.severAll.keys():
+            dateTimeE=self.severAll[key][0][2].split(' ')[0]
+            if dateTimeE==dateTime:
+                self.sever[key]=self.severAll[key]
+
         r=0
         #使对比的活动表和服务器返回的字典里key完全相同，缺少的加一个空活动进去
         for key in self.sever.keys():
@@ -1619,11 +1670,8 @@ class ui_compare(QMainWindow,activ.Ui_MainWindow):
                 for c in range(a-b):
                     self.excel[key].append([])
             elif a<b:
-                lists=[]
                 for c in range(b-a):
-                    lists=self.excel[key]
-                    lists.append([])
-                self.excel[key]=lists
+                    self.sever[key].append([])
             b=True
             if self.excel[key]!=self.sever[key]:
                 b=False
@@ -1664,6 +1712,8 @@ class ui_compare(QMainWindow,activ.Ui_MainWindow):
             r+=1
             self.liste.append(self.excel[key][i])
             self.lists.append(self.sever[key][i])
+        self.ui.b_load.setEnabled(True)
+        self.ui.b_load.setText('对比活动')
     def getmassage(self,a):
         if a==1:
             row=self.ui.excel_1.currentIndex().row()

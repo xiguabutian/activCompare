@@ -63,29 +63,19 @@
              </item>
              <item>
               <widget class="QComboBox" name="comboBox">
+               <property name="currentText">
+                <string>对外安卓测试服</string>
+               </property>
                <item>
                 <property name="text">
-                 <string>对内安卓测试服</string>
+                 <string>对外安卓测试服</string>
                 </property>
                </item>
                <item>
                 <property name="text">
-                 <string>对内IOS测试</string>
+                 <string>对外IOS测试</string>
                 </property>
                </item>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="pushButton_4">
-               <property name="maximumSize">
-                <size>
-                 <width>40</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="text">
-                <string>OK</string>
-               </property>
               </widget>
              </item>
              <item>
@@ -120,6 +110,12 @@
              </item>
              <item>
               <widget class="QPushButton" name="pushButton">
+               <property name="minimumSize">
+                <size>
+                 <width>120</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="maximumSize">
                 <size>
                  <width>150</width>
@@ -127,7 +123,26 @@
                 </size>
                </property>
                <property name="text">
-                <string>2020/01/25 15:25:50</string>
+                <string/>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="pushButton_4">
+               <property name="minimumSize">
+                <size>
+                 <width>60</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>40</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string/>
                </property>
               </widget>
              </item>
@@ -160,6 +175,12 @@
              </property>
              <item>
               <widget class="QPushButton" name="b_selectExcel">
+               <property name="minimumSize">
+                <size>
+                 <width>75</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="maximumSize">
                 <size>
                  <width>110</width>
@@ -229,6 +250,12 @@
              </property>
              <item>
               <widget class="QPushButton" name="b_selectItem">
+               <property name="minimumSize">
+                <size>
+                 <width>92</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="text">
                 <string>选择道具配置表</string>
                </property>
@@ -236,6 +263,12 @@
              </item>
              <item>
               <widget class="QPushButton" name="b_selectCard">
+               <property name="minimumSize">
+                <size>
+                 <width>104</width>
+                 <height>0</height>
+                </size>
+               </property>
                <property name="text">
                 <string>选择究极卡配置表</string>
                </property>
@@ -251,21 +284,7 @@
              <item>
               <widget class="QPushButton" name="b_load">
                <property name="text">
-                <string>加载</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="b_compare">
-               <property name="text">
-                <string>比对</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QPushButton" name="b_value">
-               <property name="text">
-                <string>价值验证</string>
+                <string>对比</string>
                </property>
               </widget>
              </item>
@@ -385,7 +404,7 @@
                <item>
                 <widget class="QLabel" name="label_8">
                  <property name="text">
-                  <string>活动表</string>
+                  <string>活动表：</string>
                  </property>
                 </widget>
                </item>
